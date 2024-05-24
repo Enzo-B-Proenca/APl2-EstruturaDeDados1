@@ -1,0 +1,14 @@
+Checklist
+- Validações
+- :e, Funcionando
+- :w, a implementar versão em novo arquivo. 
+- :q!, Funcionando
+- :help, Funcionando
+- :x, Funcionando
+- :xG, Funcionando
+- :XG, Funcionando
+- :a, Funcionando
+- :i, Funcionando
+
+Pedidos:
+- Implementar no ":w" uma função de "reopen". Já que quando usamos as outras precisamos limpar a lista encadeada.  

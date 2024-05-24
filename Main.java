@@ -8,19 +8,7 @@
 import java.util.Scanner;
 import java.io.*;
 
-/*
-Checklist
-- Validações
-- :e, funcional
-- :w, a implementar versão em novo arquivo
-- :q!, funcional
-- :help, funcional
-- :x, Funcionando, apenas dislocado, por causa de inicialização em 0
-- :xG, a testar
-- :XG, a testar
-- :a, Funcionando parcialmente Dislocado por causa de inicialização em 0 e caso venha um número de duas casas decimais ele só lê a primeira
-- :i, Funcionando, apenas dislocado, por causa de inicialização em 0
-*/
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
