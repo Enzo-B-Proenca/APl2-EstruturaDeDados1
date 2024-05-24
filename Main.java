@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
+        boolean saved = false;
         String open = null;
         do {
             System.out.println("\n***EDITOR DE TEXTO***\nDigite uma opção: ");
@@ -26,6 +27,7 @@ public class Main {
                     String path = file.getAbsolutePath();
                     list.read(path);
                     System.out.println("Lista: (count = " + list.count() + ") \n" + list);
+                    open = path;
                 } else {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
                 }
@@ -45,29 +47,52 @@ public class Main {
             else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
                 if (comando.length == 2) {
-                    // Opção para default
                     String archive = comando[1];
-                    // archive = "src/main/java/tset.txt";
-                    archive = "tset.txt";
+                    File file = new File(archive);
+                    String path = file.getAbsolutePath();
                     if (list.getHead() != null) {
                         list.save(archive);
-                    } else {
-                        System.out.println("Não há nada para salvar.");
+                        saved = true;
                     }
-                } else if (comando.length == 1) {
+                    else{
+                    System.out.println("Não há nada para salvar.");
+                    }
+                }
+                else if (comando.length == 1){
                     if (list.getHead() != null) {
-                        //// archive = "src/main/java/test.txt
-                        String archive = "test.txt";
-                        list.save(archive);
-                    } else {
+                        if (open != null) {
+                        list.save(open);
+                        saved = true;
+                        }
+                    }
+                    else{
                         System.out.println("Não há nada para salvar.");
                     }
                 }
             }
 
             else if (opcao.equals(":q!")) {
-                System.out.println("Programa encerrado.");
-                break;
+                if (saved) {
+                    System.out.println("Programa encerrado.");
+                    break;
+                }
+                else {
+                    System.out.println("Parece que o arquivo não foi salvo ainda. Deseja salvar as modificações antes de encerrar? (y/n)");
+                    String opcaosave = scan.nextLine();
+                    if (opcaosave.equals("y")) {
+                        list.save(open);
+                        saved = true;
+                        System.out.println("Programa encerrado.");
+                        break;
+                    }
+                    else if (opcaosave.equals("n")) {
+                        System.out.println("Programa encerrado.");
+                        break;
+                    }
+                    else {
+                        System.out.println("Opção inválida. Tente novamente.");
+                    }
+                }
             }
 
             else if (opcao.startsWith(":xG")) {
