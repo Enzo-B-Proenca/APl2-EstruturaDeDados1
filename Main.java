@@ -80,10 +80,15 @@ public class Main {
                     System.out.println("Parece que o arquivo não foi salvo ainda. Deseja salvar as modificações antes de encerrar? (y/n)");
                     String opcaosave = scan.nextLine();
                     if (opcaosave.equals("y")) {
-                        list.save(open);
-                        saved = true;
-                        System.out.println("Programa encerrado.");
-                        break;
+                    	try {
+                    		list.save(open);
+                    		saved = true;
+                    		System.out.println("Programa encerrado.");
+                    		break;
+                    	}
+                    	catch (NullPointerException e) {
+                    		System.out.println("O arquivo não foi aberto ainda. Tente novamente.");
+                    	}
                     }
                     else if (opcaosave.equals("n")) {
                         System.out.println("Programa encerrado.");
