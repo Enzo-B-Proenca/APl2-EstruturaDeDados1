@@ -161,6 +161,7 @@ public class LinkedList {
 
       previous.setNext(next);
       next.setPrevious(previous);
+      clear();
 
     } catch (Exception e) {
       System.out.println(e);
@@ -201,6 +202,7 @@ public class LinkedList {
         head = null;
         tail = null;
       }
+      clear();
     } catch (Exception e){
       System.out.println(e);
     }
@@ -208,7 +210,7 @@ public class LinkedList {
     return head;
   }
 
-  public node removeFrom(int index) {
+  public void removeFrom(int index) {
     if (isEmpty() || head == null)
       throw new NullPointerException("A lista está vazia ou o head é nulo.");
 
@@ -223,7 +225,6 @@ public class LinkedList {
       currentIdx++;
     }
 
-    node toRemove = current;
     while (currentIdx >= 0) {
       node previous = current.getPrevious();
       node next = current.getNext();
@@ -252,8 +253,7 @@ public class LinkedList {
       }
 
     }
-
-    return toRemove;
+    clear();
   }
 
   public void insertAfter(int posLin, LinkedList newList) {

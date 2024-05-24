@@ -89,7 +89,7 @@ public class Main {
                         continue;
                     }
 
-                    node nodeRemovido = list.removeUntil(index);
+                    list.removeUntil(index);
                     System.out.println("Nós removidos a partir do indice: " + (index + 1) + " até o final da lista.");
 
                 } catch (NumberFormatException e) {
@@ -117,9 +117,9 @@ public class Main {
                         continue;
                     }
 
-                    node nodeRemovido = list.removeFrom(index);
+                    list.removeFrom(index);
                     System.out.println("Nós removidos a partir do índice " + index + 1 + " até o início.");
-
+                    list.clear();
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: o índice fornecido não é um número válido.");
                 }
@@ -134,7 +134,8 @@ public class Main {
                 if (index > list.count() || index < 0)
                     System.out.println("Operação inválida, linha fora de alcance.");
 
-                node nodeRemovido = list.removeAt(index);
+                list.removeAt(index);
+                list.clear();
 
             }
 
