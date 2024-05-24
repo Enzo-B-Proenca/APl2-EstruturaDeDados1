@@ -161,7 +161,6 @@ public class LinkedList {
 
       previous.setNext(next);
       next.setPrevious(previous);
-      clear();
 
     } catch (Exception e) {
       System.out.println(e);
@@ -202,7 +201,6 @@ public class LinkedList {
         head = null;
         tail = null;
       }
-      clear();
     } catch (Exception e){
       System.out.println(e);
     }
@@ -253,12 +251,19 @@ public class LinkedList {
       }
 
     }
-    clear();
   }
 
   public void insertAfter(int posLin, LinkedList newList) {
-    if (posLin < 0 || posLin >= count) {
+    if (posLin < 0 || posLin > count) {
       System.out.println("Posição inválida");
+      return;
+    }
+
+    //Caso a lista original esteja vazia.
+    if (count == 0){
+      head = newList.getHead();
+      tail = newList.getTail();
+      count = newList.count();
       return;
     }
 
@@ -282,32 +287,45 @@ public class LinkedList {
   }
 
   public void insertBefore(int posLin, LinkedList newList) {
-    if (posLin < 0 || posLin >= count) {
-      System.out.println("Posição fora de alcance.");
+    if (posLin < 0 || posLin > count) {
+        System.out.println("Posição fora de alcance.");
+        return;
+    }
+
+    // Caso esteja vazio.
+    if (count == 0){
+      head = newList.getHead();
+      tail = newList.getTail();
+      head.setPrevious(tail);
+      tail.setNext(head);
+      count = newList.count();
       return;
     }
 
     node current = head;
     for (int i = 0; i < posLin; i++) {
-      current = current.getNext();
+        current = current.getNext();
     }
 
     node newTail = newList.getTail();
     node newHead = newList.getHead();
 
     if (current == head) {
+      node previous = tail;
+      newTail.setNext(head);
+      head.setPrevious(previous);
+      previous.setNext(newHead);
       head = newHead;
     } else {
-      node previous = current.getPrevious();
-      previous.setNext(newHead);
-      newHead.setPrevious(previous);
+        node previous = current.getPrevious();
+        previous.setNext(newHead);
+        newHead.setPrevious(previous);
+
+        newTail.setNext(current);
+        current.setPrevious(newTail);
     }
-
-    newTail.setNext(current);
-    current.setPrevious(newTail);
-
     count += newList.count();
-  }
+}
   
   public void clear() {
 	  node current = head;

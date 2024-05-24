@@ -44,13 +44,13 @@ public class Main {
              * }
              */
 
-            else if (opcao.startsWith(":w")) {
+             else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
                 if (comando.length == 2) {
                     String archive = comando[1];
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
-                    if (list.getHead() != null) {
+                    if (!list.isEmpty()) {
                         list.save(archive);
                         saved = true;
                     }
@@ -59,7 +59,7 @@ public class Main {
                     }
                 }
                 else if (comando.length == 1){
-                    if (list.getHead() != null) {
+                    if (!list.isEmpty()) {
                         if (open != null) {
                         list.save(open);
                         saved = true;
@@ -145,7 +145,6 @@ public class Main {
 
                     list.removeFrom(index);
                     System.out.println("Nós removidos a partir do índice " + index + 1 + " até o início.");
-                    list.clear();
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: o índice fornecido não é um número válido.");
                 }
@@ -161,7 +160,6 @@ public class Main {
                     System.out.println("Operação inválida, linha fora de alcance.");
 
                 list.removeAt(index);
-                list.clear();
 
             }
 
@@ -174,7 +172,7 @@ public class Main {
 
                 try {
                     int posLin = (Integer.parseInt(comando[1])) -1;
-                    if (posLin >= list.count() || posLin < 0) {
+                    if (posLin > list.count() || posLin < 0) {
                         System.out.println("Operação inválida, posição fora de alcance.");
                         continue;
                     }
@@ -187,7 +185,6 @@ public class Main {
                     }
                     list.insertAfter(posLin, newList);
                     System.out.println("Novas linhas inseridas.");
-                    list.clear();
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: a posição fornecida não é um número válido.");
                 }
@@ -201,8 +198,8 @@ public class Main {
                 }
 
                 try {
-                    int posLin = (Integer.parseInt(comando[1]))-1;
-                    if (posLin >= list.count() || posLin < 0) {
+                    int posLin = Integer.parseInt(comando[1])-1;
+                    if (posLin > list.count() || posLin < 0) {
                         System.out.println("Operação inválida, posição fora de alcance.");
                         continue;
                     }
@@ -216,7 +213,7 @@ public class Main {
 
                     list.insertBefore(posLin, newList);
                     System.out.println("Novas linhas inseridas.");
-                    list.clear();
+                    saved = false;
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: a posição fornecida não é um número válido.");
                 }
