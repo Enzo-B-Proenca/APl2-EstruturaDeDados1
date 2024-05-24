@@ -172,6 +172,7 @@ public class Main {
                     }
                     list.insertAfter(posLin, newList);
                     System.out.println("Novas linhas inseridas.");
+                    list.clear();
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: a posição fornecida não é um número válido.");
                 }
@@ -200,6 +201,7 @@ public class Main {
 
                     list.insertBefore(posLin, newList);
                     System.out.println("Novas linhas inseridas.");
+                    list.clear();
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: a posição fornecida não é um número válido.");
                 }
