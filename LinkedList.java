@@ -312,18 +312,14 @@ public class LinkedList {
   public void clear() {
 	  node current = head;
 	  for (int i = 0; i < count; ++i) {
-		  		  
 		  node next = current.getNext();
-		  
 		  current.setPrevious(null);
 		  current.setNext(null);
-		  --count;
-		  current = next;
+      current = next;
 	  }
-	  
-	  if (count > 0) {
-		  
-	  }
+	  head = null;
+    tail = null;
+    count = 0;
   }
 
   @Override
