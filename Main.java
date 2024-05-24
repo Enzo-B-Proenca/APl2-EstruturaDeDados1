@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
+        String open = null;
         do {
             System.out.println("\n***EDITOR DE TEXTO***\nDigite uma opção: ");
             String opcao = scan.nextLine();
