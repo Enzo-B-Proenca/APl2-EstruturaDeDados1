@@ -5,17 +5,17 @@
 // Referência: https://www.youtube.com/watch?v=xk4_1vDrzzo
 // Referência: https://www.youtube.com/watch?v=N6dOwBde7-M
 // Referência: https://www.youtube.com/watch?v=VJgCjLuU4e8&list=PLqleLpAMfxGDVu5tUmUg9jSQUUB8_5DB0
-
-// IMPORTANTE! Quando for testar, coloque os arquivos .java dentro do src e os arquivos .txt fora do src
 import java.util.Scanner;
 import java.io.*;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {        Scanner scan = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
         LinkedList areaTransferencia = new LinkedList();
+        boolean selecao = false;
         boolean saved = false;
         String open = null;
         do {
@@ -27,13 +27,24 @@ public class Main {
                     String archive = comando[1];
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
-                    if (list.read(path)){
-                        open = path;
-                    }
+                    list.read(path);
+                    System.out.println("Lista: (count = " + list.count() + ") \n" + list);
+                    open = path;
                 } else {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
                 }
             }
+            /*
+             * else if (opcao.equals(":w")){
+             * if (list.getHead() != null) {
+             * String archive = "src/main/java/test.txt";
+             * list.save(archive);
+             * }
+             * else{
+             * System.out.println("Não há nada para salvar.");
+             * }
+             * }
+             */
 
              else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
@@ -42,7 +53,7 @@ public class Main {
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
                     if (!list.isEmpty()) {
-                        list.save(path);
+                        list.save(archive);
                         saved = true;
                     }
                     else{
@@ -52,47 +63,133 @@ public class Main {
                 else if (comando.length == 1){
                     if (!list.isEmpty()) {
                         if (open != null) {
-                          list.save(open);
-                          saved = true;
+                        list.save(open);
+                        saved = true;
                         }
                     }
                     else{
                         System.out.println("Não há nada para salvar.");
                     }
                 }
-             }
+            }
                  
             else if(opcao.startsWith(":v")) {
             	String[] comando = opcao.split("\\\s");
     			if(comando.length < 3) {
-    				System.out.println("Erro: Digite dois numeros inteiros");
+    				System.err.println("Erro: Digite dois numeros inteiros");
+    				continue;
     			}
             	if(comando.length == 3) {
             		String archive1 = comando[1]; String archive2 = comando[2];
             		
             		try {
-            			int LinhaIni = Integer.parseInt(archive1);
-                		int LinhaFim = Integer.parseInt(archive2);
-            			
+            			int LinhaIni = Integer.parseInt(archive1)-1;
+                		int LinhaFim = Integer.parseInt(archive2)-1;
             			if(LinhaIni > LinhaFim) {
-            				System.out.println("Erro! Intervalo de números inválido!");
+            				System.err.println("Erro! Intervalo de números inválido!");
+            				continue;
             			}
 
-                		if(LinhaIni <= list.count()) {
-                			if(LinhaFim <= list.count()) {
-                				list.marcarLinhas(LinhaIni, LinhaFim);
-                			}
+                		if(LinhaIni <= list.count() && LinhaFim <= list.count()) {
+                			list.marcarLinhas(LinhaIni, LinhaFim);
+                			selecao = true;
+                			continue;
+                		} 
+                		else {
+                			System.err.println("Erro: Intervalo fora de alcance!");
+                			continue;
                 		}
             		} catch(NumberFormatException e) {
             			System.err.println("Erro: A entrada deve ser um numero inteiro.");
+            			continue;
             		}
             	}
+            	System.err.println("Erro: Excesso de argumentos");
             }
             
             else if(opcao.equals(":y")) {
+            	if(!selecao) {
+            		System.err.println("Erro: Selecione algo antes de copiar");
+            		continue;
+            	}
+            	areaTransferencia.clear();
             	list.tranferirNos(areaTransferencia);
             	System.out.println("Linhas copiadas: " + areaTransferencia.count());
             }
+            
+            else if(opcao.startsWith(":c")) {
+            	String[] comando = opcao.split("\\s+");
+            	if(comando.length != 1) {
+            		System.err.println("Erro: Função não requer argumentos!");
+            		continue;
+            	}
+            	
+            	if (!selecao) {
+            		System.err.println("Erro: Selecione algo antes de recortar!");
+            		continue;
+            	}
+            	
+            	// Colocar o selecionado na area de transferencia
+            	areaTransferencia.clear();
+            	list.tranferirNos(areaTransferencia);
+            	
+            	// Apagar da lista original o que foi recortado
+            	node percorre = list.getHead();
+            	node next = percorre.getNext();
+            	
+            	for(int i = 0 ; i < list.count() ; i++) {
+            		// Se o node foi marcado para a area de transferencia remover ele
+            		if (percorre.getMarca()) {
+            			list.removeAt(i);
+            		}
+            		percorre = next;
+            		next = percorre.getNext();
+            	}
+            	
+            	// como recortou nao ha mais nada selecionado
+            	selecao = false;
+            	
+            	System.out.println(areaTransferencia);
+            }
+            
+            else if (opcao.startsWith(":p")) {
+            	
+            	if(areaTransferencia.getHead() == null) {
+            		System.err.println("Erro: Selecione algo antes de colar!");
+            		continue;
+            	}
+            	System.out.println(areaTransferencia);
+            	String[] comando = opcao.split("\\s+");
+            	if (comando.length < 2) {
+            		System.err.println("Erro: Insira uma linha para inserir o que foi copiado!");
+            		continue;
+            	}
+            	else if(comando.length > 2) {
+            		System.err.println("Erro: Função requer apenas 1 argumento!");
+            		continue;
+            	}
+            	try {
+            		int linha = Integer.parseInt(comando[1]) - 1;
+            		
+            		if (linha < 0 || linha > list.count()) {
+            			System.err.println("Erro: linha nao encontrada");
+            		}
+            		            		
+            		node nodeAux2 = areaTransferencia.getHead();
+            		LinkedList Aux = new LinkedList();
+            		
+            		for (int i = 0; i < areaTransferencia.count(); i++) {
+            			Aux.append(nodeAux2.getData());
+            			nodeAux2 = nodeAux2.getNext();
+            		}
+            		list.insertAfter(linha, Aux);
+            		
+            	}catch(NumberFormatException e) {
+            		System.err.println("Erro: O parametro deve ser um numero!");
+            	}
+            	
+            }
+            
             
             else if (opcao.equals(":s")) {
                 String auxiliar = "";
@@ -240,7 +337,7 @@ public class Main {
                     }
 
                     list.removeFrom(index);
-                    System.out.println("Nós removidos a partir do índice " + index + 1 + " até o início.");
+                    System.out.println("Nós removidos a partir do índice " + (index + 1) + " até o início.");
                 } catch (NumberFormatException e) {
                     System.out.println("Erro: o índice fornecido não é um número válido.");
                 }
@@ -255,7 +352,7 @@ public class Main {
                 if (index > list.count() || index < 0)
                     System.out.println("Operação inválida, linha fora de alcance.");
 
-                list.removeAt(index);
+                list.removeAt(index-1);
 
             }
 
@@ -263,14 +360,16 @@ public class Main {
             	String[] comando = opcao.split("\\s+");
             	// StringBuilder para quando precisar alterar alguma Data de um node
             	StringBuilder alterar = new StringBuilder();
+            	
+            	boolean trocou = false;
             	// Se nao houver o que ser procurado mostrar o erro
             	if (comando.length == 1) {
-            		System.out.println("Operacao invalida, faltam argumentos!");
+            		System.err.println("Erro: Operacao invalida, faltam argumentos!");
             		continue;
             	}
             	// Se houverem 5 ou mais argumentos mostra o erro
             	else if(comando.length > 4) {
-            		System.out.println("Operacao invalida, há mais que 4 argumentos!");
+            		System.err.println("Erro: Operacao invalida, há mais que 4 argumentos!");
             		continue;
             	}
             	
@@ -284,6 +383,7 @@ public class Main {
             			for (int i = 0 ; i < procurar.length ; i++) {
             				if (comando[1].equals(procurar[i])) {
             					System.out.println(linha_atual + " " + percorre.getData());
+            					trocou = true;
             				}
 
             			}
@@ -292,6 +392,9 @@ public class Main {
             			percorre = percorre.getNext();
             			procurar = percorre.getData().split("\\s+");
             		}while(percorre != list.getHead());
+            		if (!trocou){
+            			System.out.println("Palavra nao encontrada!");
+            		}
             		continue;
             	
             	}
@@ -304,6 +407,7 @@ public class Main {
             			for (int i = 0 ; i < procurar.length ; i++) {
             				if (comando[1].equals(procurar[i])) {
             					procurar[i] = comando[2];
+            					trocou = true;
             				}
             				// entra palavra por palavra no stringbuilder
             				alterar.append(procurar[i]);
@@ -320,7 +424,12 @@ public class Main {
             			procurar = percorre.getData().split("\\s+");
             			
             		} while(percorre != list.getHead());
-            		
+            		if(trocou) {
+                		System.out.println("Troca efetuada com sucesso!");
+                		continue;
+                	}
+                	
+                	System.out.println("Palavra nao encontrada, sem alteracoes!");
             		continue;
             	}
             	
@@ -330,7 +439,7 @@ public class Main {
             		System.out.println(linha);
                 	
                 	if (linha < 0 | linha > list.count()) {
-                		System.out.println("Posicao invalida, insira uma linha que exista no texto!");
+                		System.err.println("Erro: Posicao invalida, insira uma linha que exista no texto!");
                 	}
                 	
                 	while (linha_atual < linha) {
@@ -339,7 +448,7 @@ public class Main {
                 	}
                 	
                 	String[] palavras = percorre.getData().split("\\s+");
-                	boolean trocou = false;
+                	
                 	
                 	for (int i = 0 ; i < palavras.length ; i++) {
                 		// quando encontrar a palavra a ser substituida troca ela
@@ -364,7 +473,7 @@ public class Main {
                 	
                 
             	} catch (NumberFormatException e) {
-            		System.out.println("Entrada de linha inválida, insira números inteiros!");
+            		System.err.println("Erro: Entrada de linha inválida, insira números inteiros!");
             		continue;
             	}
             }
