@@ -168,6 +168,110 @@ public class Main {
 
             }
 
+            else if (opcao.startsWith(":/")) {
+            	String[] comando = opcao.split("\\s+");
+            	// StringBuilder para quando precisar alterar alguma Data de um node
+            	StringBuilder alterar = new StringBuilder();
+            	// Se nao houver o que ser procurado mostrar o erro
+            	if (comando.length == 1) {
+            		System.out.println("Operacao invalida, faltam argumentos!");
+            		continue;
+            	}
+            	// Se houverem 5 ou mais argumentos mostra o erro
+            	else if(comando.length > 4) {
+            		System.out.println("Operacao invalida, há mais que 4 argumentos!");
+            		continue;
+            	}
+            	
+            	node percorre = list.getHead();
+            	int linha_atual = 1;
+            	
+            	if (comando.length == 2) {
+            		String[] procurar = percorre.getData().split("\\s+");
+            		do {
+            			// Loop para percorrer as plavras da Data do node atual e comparar com o procurado
+            			for (int i = 0 ; i < procurar.length ; i++) {
+            				if (comando[1].equals(procurar[i])) {
+            					System.out.println(linha_atual + " " + percorre.getData());
+            				}
+
+            			}
+            			// Atualizar para a proxima linha
+            			linha_atual++;
+            			percorre = percorre.getNext();
+            			procurar = percorre.getData().split("\\s+");
+            		}while(percorre != list.getHead());
+            		continue;
+            	
+            	}
+            	
+            	else if(comando.length == 3) {
+            		String[] procurar = percorre.getData().split("\\s+");
+            		
+            		do {
+            			// Loop para percorrer as plavras da Data do node atual e comparar com o procurado
+            			for (int i = 0 ; i < procurar.length ; i++) {
+            				if (comando[1].equals(procurar[i])) {
+            					procurar[i] = comando[2];
+            				}
+            				// entra palavra por palavra no stringbuilder
+            				alterar.append(procurar[i]);
+            				alterar.append(" ");
+            			}
+            			
+            			// se a Data foi alterada altera
+            			percorre.setData(alterar.toString());
+            			// Reseta o string builder
+            			alterar.setLength(0);
+            			// Atualizar para a proxima linha
+            			linha_atual++;
+            			percorre = percorre.getNext();
+            			procurar = percorre.getData().split("\\s+");
+            			
+            		} while(percorre != list.getHead());
+            		
+            		continue;
+            	}
+            	
+            	int linha = Integer.parseInt(comando[3]);
+            	
+            	System.out.println(linha);
+            	
+            	if (linha < 0 | linha > list.count()) {
+            		System.out.println("Posicao invalida, insira uma linha que exista no texto!");
+            	}
+            	
+            	while (linha_atual < linha) {
+            		linha_atual++;
+            		percorre = percorre.getNext();
+            	}
+            	
+            	String[] palavras = percorre.getData().split("\\s+");
+            	boolean trocou = false;
+            	
+            	for (int i = 0 ; i < palavras.length ; i++) {
+            		// quando encontrar a palavra a ser substituida troca ela
+            		if (comando[1].equals(palavras[i])) {
+            			palavras[i] = comando[2];
+            			trocou = true;
+            		}
+            		alterar.append(palavras[i]);
+            		alterar.append(" ");
+            		
+            		percorre.setData(alterar.toString());
+            		
+            	}
+            	// Resetar o StringBuilder
+            	alterar.setLength(0);
+            	if(trocou) {
+            		System.out.println("Troca efetuada com sucesso!");
+            		continue;
+            	}
+            	
+            	System.out.println("Palavra nao encontrada, sem alteracoes!");
+            	
+            }
+            
             else if (opcao.startsWith(":a")) {
                 String[] comando = opcao.split("\\s+");
                 if (comando.length < 2) {
