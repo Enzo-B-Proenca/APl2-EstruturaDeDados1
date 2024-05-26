@@ -118,6 +118,7 @@ public class LinkedList {
         lin = buff.readLine();
       }
       buff.close();
+      System.out.println("Arquivo lido.");
     } catch (IOException e) {
       System.out.println("Erro ao abrir o arquivo.");
     }
