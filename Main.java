@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
+        LinkedList areaTransferencia = new LinkedList();
         boolean saved = false;
         String open = null;
         do {
@@ -70,6 +71,106 @@ public class Main {
                     }
                 }
             }
+                 
+            else if(opcao.startsWith(":v")) {
+            	String[] comando = opcao.split("\\\s");
+    			if(comando.length < 3) {
+    				System.out.println("Erro: Digite dois numeros inteiros");
+    			}
+            	if(comando.length == 3) {
+            		String archive1 = comando[1]; String archive2 = comando[2];
+            		
+            		try {
+            			int LinhaIni = Integer.parseInt(archive1);
+                		int LinhaFim = Integer.parseInt(archive2);
+            			
+            			if(LinhaIni > LinhaFim) {
+            				System.out.println("Erro! Intervalo de números inválido!");
+            			}
+
+                		if(LinhaIni <= list.count()) {
+                			if(LinhaFim <= list.count()) {
+                				list.marcarLinhas(LinhaIni, LinhaFim);
+                			}
+                		}
+            		} catch(NumberFormatException e) {
+            			System.err.println("Erro: A entrada deve ser um numero inteiro.");
+            		}
+            	}
+            }
+            
+            else if(opcao.equals(":y")) {
+            	list.tranferirNos(areaTransferencia);
+            	System.out.println("Linhas copiadas: " + areaTransferencia.count());
+            }
+            
+            else if (opcao.equals(":s")) {
+                String auxiliar = "";
+                int contador_linhas = 1;
+                node percorre = list.getHead();
+                String[] comando = opcao.split("\s+");
+                if (comando.length == 1) {
+                    do {
+                        auxiliar = (contador_linhas + " " + percorre.getData());
+                        System.out.println(auxiliar);
+                        if(contador_linhas % 20 == 0) {
+                            System.out.println("\n");
+                            System.out.println("=========================================");
+                        }
+                        contador_linhas++;
+                        percorre = percorre.getNext();
+                    }while(percorre != list.getHead());
+                }
+                else {
+                    if(comando[1] == "1") {}
+                }
+
+            }
+            
+            else if (opcao.startsWith(":s")) {
+                String auxiliar = "";
+                int contador_linhas = 1;
+                node percorre = list.getHead();
+                int LinhaInicio = 1;
+                int LinhaFimm = list.count();
+                String[] comando = opcao.split("\s+");
+                
+                if(comando.length < 3) {
+                	System.out.println("Erro: Digite dois numeros inteiros.");
+                }
+
+                if (comando.length == 3) {
+                    String num1 = comando[1]; String num2 = comando[2];
+                    
+                    try {
+                    	LinhaInicio = Integer.parseInt(num1); 
+                    	LinhaFimm = Integer.parseInt(num2);
+                    	
+                    	if(LinhaInicio > LinhaFimm) {
+            				System.out.println("Erro! Intervalo de números inválido!");
+            			}
+                    	
+                    	for(int i = 1; i < LinhaInicio; i++) {
+                        	contador_linhas++;
+                            percorre = percorre.getNext();
+                        }
+
+                        node aux = percorre;
+                        for(int j = LinhaInicio; j <= LinhaFimm; j++) {
+                            auxiliar = (contador_linhas + " " + aux.getData());
+                            System.out.println(auxiliar);
+                            contador_linhas++;
+                            if(contador_linhas % 20 == 1) {
+                                System.out.println("\n");
+                                System.out.println("=========================================");
+                            }
+                            aux = aux.getNext();
+                        }
+                    } catch(NumberFormatException e) {
+                    	System.err.println("Erro: A entrada deve ser um numro inteiro.");
+                    }
+                }
+            }                 
 
             else if (opcao.equals(":q!")) {
                 if (saved) {
