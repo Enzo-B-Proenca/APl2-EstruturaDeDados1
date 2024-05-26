@@ -5,6 +5,8 @@
 // Referência: https://www.youtube.com/watch?v=xk4_1vDrzzo
 // Referência: https://www.youtube.com/watch?v=N6dOwBde7-M
 // Referência: https://www.youtube.com/watch?v=VJgCjLuU4e8&list=PLqleLpAMfxGDVu5tUmUg9jSQUUB8_5DB0
+
+// IMPORTANTE! Quando for testar, coloque os arquivos .java dentro do src e os arquivos .txt fora do src, senão para abrir os txt tem que pegar seu caminho inteiro
 import java.util.Scanner;
 import java.io.*;
 
@@ -28,7 +30,6 @@ public class Main {
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
                     list.read(path);
-                    System.out.println("Lista: (count = " + list.count() + ") \n" + list);
                     open = path;
                 } else {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
