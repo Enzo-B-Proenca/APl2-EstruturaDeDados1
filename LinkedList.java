@@ -37,7 +37,7 @@ public class LinkedList {
 
   public void append(String value) {
     node node = new node(null, value, null);
-
+    node.desMarcarNo();
     if (isEmpty()) {
       head = node;
     } else {
@@ -257,7 +257,8 @@ public class LinkedList {
     node atual = head;
 		  
     for(int i = 0; i < linhaIni; i++) {
-	atual = atual.getNext();
+    	atual.desMarcarNo();
+    	atual = atual.getNext();
     }
 		  
     node aux = atual;
@@ -270,10 +271,9 @@ public class LinkedList {
 	  
  public void tranferirNos(LinkedList outra) {
    node atual = head;
-		  
    for(int i = 0; i < count(); i++) {
-      if(atual.getMarca() == true) {
-	outra.append(atual.getData());
+      if(atual.getMarca()){
+    	  outra.append(atual.getData());
       }
       atual = atual.getNext();
     }
