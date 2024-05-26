@@ -9,6 +9,7 @@ public class node{
   private node Next;
   private node Previous;
   private String data;
+  private boolean marca = false;
 
   // Construtor vazio tendo todos como null
   public node(){
@@ -66,6 +67,14 @@ public class node{
   // Setter para o próximo
   public void setNext(node Next){
     this.Next = Next;
+  }
+
+  public void MarcarNo() {
+    this.marca = true;
+  }
+
+  public boolean getMarca() {
+    return marca;
   }
 
   @Override
