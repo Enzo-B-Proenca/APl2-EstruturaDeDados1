@@ -76,6 +76,10 @@ public class node{
   public boolean getMarca() {
     return marca;
   }
+  
+  public void desMarcarNo() {
+	  this.marca = false;
+  }
 
   @Override
   public String toString() {
@@ -85,4 +89,3 @@ public class node{
   }
   
 }
-
