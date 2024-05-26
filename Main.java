@@ -233,45 +233,51 @@ public class Main {
             		continue;
             	}
             	
-            	int linha = Integer.parseInt(comando[3]);
-            	
-            	System.out.println(linha);
-            	
-            	if (linha < 0 | linha > list.count()) {
-            		System.out.println("Posicao invalida, insira uma linha que exista no texto!");
-            	}
-            	
-            	while (linha_atual < linha) {
-            		linha_atual++;
-            		percorre = percorre.getNext();
-            	}
-            	
-            	String[] palavras = percorre.getData().split("\\s+");
-            	boolean trocou = false;
-            	
-            	for (int i = 0 ; i < palavras.length ; i++) {
-            		// quando encontrar a palavra a ser substituida troca ela
-            		if (comando[1].equals(palavras[i])) {
-            			palavras[i] = comando[2];
-            			trocou = true;
-            		}
-            		alterar.append(palavras[i]);
-            		alterar.append(" ");
+            	try {
+            		int linha = Integer.parseInt(comando[3]);
             		
-            		percorre.setData(alterar.toString());
-            		
-            	}
-            	// Resetar o StringBuilder
-            	alterar.setLength(0);
-            	if(trocou) {
-            		System.out.println("Troca efetuada com sucesso!");
+            		System.out.println(linha);
+                	
+                	if (linha < 0 | linha > list.count()) {
+                		System.out.println("Posicao invalida, insira uma linha que exista no texto!");
+                	}
+                	
+                	while (linha_atual < linha) {
+                		linha_atual++;
+                		percorre = percorre.getNext();
+                	}
+                	
+                	String[] palavras = percorre.getData().split("\\s+");
+                	boolean trocou = false;
+                	
+                	for (int i = 0 ; i < palavras.length ; i++) {
+                		// quando encontrar a palavra a ser substituida troca ela
+                		if (comando[1].equals(palavras[i])) {
+                			palavras[i] = comando[2];
+                			trocou = true;
+                		}
+                		alterar.append(palavras[i]);
+                		alterar.append(" ");
+                		
+                		percorre.setData(alterar.toString());
+                		
+                	}
+                	// Resetar o StringBuilder
+                	alterar.setLength(0);
+                	if(trocou) {
+                		System.out.println("Troca efetuada com sucesso!");
+                		continue;
+                	}
+                	
+                	System.out.println("Palavra nao encontrada, sem alteracoes!");
+                	
+                
+            	} catch (NumberFormatException e) {
+            		System.out.println("Entrada de linha inválida, insira números inteiros!");
             		continue;
             	}
-            	
-            	System.out.println("Palavra nao encontrada, sem alteracoes!");
-            	
             }
-            
+
             else if (opcao.startsWith(":a")) {
                 String[] comando = opcao.split("\\s+");
                 if (comando.length < 2) {
