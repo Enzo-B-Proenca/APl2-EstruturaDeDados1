@@ -35,17 +35,6 @@ public class Main {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
                 }
             }
-            /*
-             * else if (opcao.equals(":w")){
-             * if (list.getHead() != null) {
-             * String archive = "src/main/java/test.txt";
-             * list.save(archive);
-             * }
-             * else{
-             * System.out.println("Não há nada para salvar.");
-             * }
-             * }
-             */
 
              else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
@@ -150,7 +139,7 @@ public class Main {
             	// como recortou nao ha mais nada selecionado
             	selecao = false;
             	
-            	System.out.println(areaTransferencia);
+            	System.out.println("Linhas removidas e enviadas para a area de transferencia com sucesso.");
             }
             
             else if (opcao.startsWith(":p")) {
@@ -159,7 +148,7 @@ public class Main {
             		System.err.println("Erro: Selecione algo antes de colar!");
             		continue;
             	}
-            	System.out.println(areaTransferencia);
+            	
             	String[] comando = opcao.split("\\s+");
             	if (comando.length < 2) {
             		System.err.println("Erro: Insira uma linha para inserir o que foi copiado!");
@@ -184,7 +173,7 @@ public class Main {
             			nodeAux2 = nodeAux2.getNext();
             		}
             		list.insertAfter(linha, Aux);
-            		
+            		System.out.println("Linhas inseridas com sucesso!");
             	}catch(NumberFormatException e) {
             		System.err.println("Erro: O parametro deve ser um numero!");
             	}
