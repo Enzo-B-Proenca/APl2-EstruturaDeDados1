@@ -252,6 +252,32 @@ public class LinkedList {
 
     }
   }
+	
+  public void marcarLinhas(int linhaIni, int linhaFim) {
+    node atual = head;
+		  
+    for(int i = 0; i < linhaIni; i++) {
+	atual = atual.getNext();
+    }
+		  
+    node aux = atual;
+    for(int j = linhaIni; j <= linhaFim; j++) {
+	aux.MarcarNo();
+	System.out.println("Nó Marcado: \n" + aux.getMarca());
+	aux = aux.getNext();
+    }
+ }
+	  
+ public void tranferirNos(LinkedList outra) {
+   node atual = head;
+		  
+   for(int i = 0; i < count(); i++) {
+      if(atual.getMarca() == true) {
+	outra.append(atual.getData());
+      }
+      atual = atual.getNext();
+    }
+  }	
 
   public void insertAfter(int posLin, LinkedList newList) {
     if (posLin < 0 || posLin > count) {
