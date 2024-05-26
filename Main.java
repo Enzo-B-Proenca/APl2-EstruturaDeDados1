@@ -5,14 +5,15 @@
 // Referência: https://www.youtube.com/watch?v=xk4_1vDrzzo
 // Referência: https://www.youtube.com/watch?v=N6dOwBde7-M
 // Referência: https://www.youtube.com/watch?v=VJgCjLuU4e8&list=PLqleLpAMfxGDVu5tUmUg9jSQUUB8_5DB0
+
+// IMPORTANTE! Quando for testar, coloque os arquivos .java dentro do src e os arquivos .txt fora do src
 import java.util.Scanner;
 import java.io.*;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {        Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
         LinkedList areaTransferencia = new LinkedList();
         boolean saved = false;
@@ -26,24 +27,13 @@ public class Main {
                     String archive = comando[1];
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
-                    list.read(path);
-                    System.out.println("Lista: (count = " + list.count() + ") \n" + list);
-                    open = path;
+                    if (list.read(path)){
+                        open = path;
+                    }
                 } else {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
                 }
             }
-            /*
-             * else if (opcao.equals(":w")){
-             * if (list.getHead() != null) {
-             * String archive = "src/main/java/test.txt";
-             * list.save(archive);
-             * }
-             * else{
-             * System.out.println("Não há nada para salvar.");
-             * }
-             * }
-             */
 
              else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
@@ -52,7 +42,7 @@ public class Main {
                     File file = new File(archive);
                     String path = file.getAbsolutePath();
                     if (!list.isEmpty()) {
-                        list.save(archive);
+                        list.save(path);
                         saved = true;
                     }
                     else{
@@ -62,15 +52,15 @@ public class Main {
                 else if (comando.length == 1){
                     if (!list.isEmpty()) {
                         if (open != null) {
-                        list.save(open);
-                        saved = true;
+                          list.save(open);
+                          saved = true;
                         }
                     }
                     else{
                         System.out.println("Não há nada para salvar.");
                     }
                 }
-            }
+             }
                  
             else if(opcao.startsWith(":v")) {
             	String[] comando = opcao.split("\\\s");
