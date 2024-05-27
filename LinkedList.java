@@ -118,7 +118,6 @@ public class LinkedList {
         lin = buff.readLine();
       }
       buff.close();
-      System.out.println("Arquivo lido.");
     } catch (IOException e) {
       System.out.println("Erro ao abrir o arquivo.");
     }
@@ -139,7 +138,7 @@ public class LinkedList {
     }
   }
 
-  public node removeAt(int index) {
+  public void removeAt(int index) {
     node current = head;
     try {
       if (isEmpty() || index < 0 || index > count)
@@ -147,11 +146,11 @@ public class LinkedList {
 
       // Remoção do head
       if (index == 0)
-        return removeHead();
+    	  removeHead();
 
       // Remoção do tail
       if (index == count - 1)
-        return removeTail();
+    	  removeTail();
 
       // Percorre até o node na posição index
       for (int i = 0; i < index; i++)
@@ -166,7 +165,6 @@ public class LinkedList {
     } catch (Exception e) {
       System.out.println(e);
     }
-    return current;
   }
 
   public node removeUntil(int index) {
@@ -175,7 +173,7 @@ public class LinkedList {
       if (isEmpty() || index < 0 || index > count)
         throw new Exception("Linha não encontrada");
 
-      for (int i = 0; i < index; ++i) {
+      for (int i = 0; i < index-1; ++i) {
         current = current.getNext();
       }
       node startNode = current;
@@ -253,28 +251,77 @@ public class LinkedList {
 
     }
   }
+  
+  public void removeMarcados() {
+	  
+	  if (isEmpty()) {
+		  return;
+	  }
+	  
+	  node atual = head;
+	  node prox = atual.getNext();
+	  node anterior = atual.getPrevious();
+	  for (int i = 0; i < count ; i++) {
+		if(atual.getMarca()) {
+			
+		  	prox.setPrevious(anterior);
+		  	anterior.setNext(prox);
+		  	
+		  	
+		  	
+		  	if (atual == head) {
+		  		
+		  		removeHead();
+		  	}
+		  	
+		  	else if (atual == tail) {
+		  		removeTail();
+		  	}
+		  	
+		  	atual.setNext(null);
+		  	atual.setPrevious(null);
+	  	}
+		
+		atual = prox;
+		prox = atual.getNext();
+		anterior = atual.getPrevious();
+	  }
+	  if (isEmpty()) {
+	  		head = null;
+	  		tail = null;
+	  		count = 0;
+	  	}
+  }
 	
   public void marcarLinhas(int linhaIni, int linhaFim) {
     node atual = head;
-		  
-    for(int i = 0; i < linhaIni; i++) {
+    
+    for (int k = 0; k < count ; k++) {
     	atual.desMarcarNo();
     	atual = atual.getNext();
     }
+    
+    atual = head;
 		  
+    for(int i = 0; i < linhaIni; i++) {
+    	atual = atual.getNext();
+    }
+		 
     node aux = atual;
     for(int j = linhaIni; j <= linhaFim; j++) {
-	aux.MarcarNo();
-	System.out.println("Nó Marcado: \n" + aux.getMarca());
-	aux = aux.getNext();
+    	aux.MarcarNo();
+    	System.out.println("Nó Marcado: " + aux.getData());
+    	aux = aux.getNext();
     }
+    
  }
-	  
+	   
  public void tranferirNos(LinkedList outra) {
-   node atual = head;
-   for(int i = 0; i < count(); i++) {
-      if(atual.getMarca()){
+	 node atual = head;
+	 for(int i = 0; i < count; i++) {
+		 if(atual.getMarca()){
     	  outra.append(atual.getData());
+    	  System.out.println(atual.getData());
       }
       atual = atual.getNext();
     }
