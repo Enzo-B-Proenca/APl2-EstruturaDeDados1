@@ -5,8 +5,6 @@
 // Referência: https://www.youtube.com/watch?v=xk4_1vDrzzo
 // Referência: https://www.youtube.com/watch?v=N6dOwBde7-M
 // Referência: https://www.youtube.com/watch?v=VJgCjLuU4e8&list=PLqleLpAMfxGDVu5tUmUg9jSQUUB8_5DB0
-
-// IMPORTANTE! Quando for testar, coloque os arquivos .java dentro do src e os arquivos .txt fora do src, senão para abrir os txt tem que pegar seu caminho inteiro
 import java.util.Scanner;
 import java.io.*;
 
@@ -17,6 +15,7 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         LinkedList list = new LinkedList();
         LinkedList areaTransferencia = new LinkedList();
+        int LinhaIni = 0, LinhaFim = 0;
         boolean selecao = false;
         boolean saved = false;
         String open = null;
@@ -35,7 +34,7 @@ public class Main {
                     System.out.println("Insira o nome do arquivo ao lado do comando.");
                 }
             }
-
+            
              else if (opcao.startsWith(":w")) {
                 String[] comando = opcao.split("\\s+");
                 if (comando.length == 2) {
@@ -64,7 +63,7 @@ public class Main {
             }
                  
             else if(opcao.startsWith(":v")) {
-            	String[] comando = opcao.split("\\\s");
+            	String[] comando = opcao.split("\\s+");
     			if(comando.length < 3) {
     				System.err.println("Erro: Digite dois numeros inteiros");
     				continue;
@@ -73,14 +72,14 @@ public class Main {
             		String archive1 = comando[1]; String archive2 = comando[2];
             		
             		try {
-            			int LinhaIni = Integer.parseInt(archive1)-1;
-                		int LinhaFim = Integer.parseInt(archive2)-1;
+            			LinhaIni = Integer.parseInt(archive1)-1;
+                		LinhaFim = Integer.parseInt(archive2)-1;
             			if(LinhaIni > LinhaFim) {
             				System.err.println("Erro! Intervalo de números inválido!");
             				continue;
             			}
 
-                		if(LinhaIni <= list.count() && LinhaFim <= list.count()) {
+                		if(LinhaIni >= 0 && LinhaFim <= list.count()) {
                 			list.marcarLinhas(LinhaIni, LinhaFim);
                 			selecao = true;
                 			continue;
@@ -123,23 +122,18 @@ public class Main {
             	areaTransferencia.clear();
             	list.tranferirNos(areaTransferencia);
             	
-            	// Apagar da lista original o que foi recortado
-            	node percorre = list.getHead();
-            	node next = percorre.getNext();
-            	
-            	for(int i = 0 ; i < list.count() ; i++) {
-            		// Se o node foi marcado para a area de transferencia remover ele
-            		if (percorre.getMarca()) {
-            			list.removeAt(i);
-            		}
-            		percorre = next;
-            		next = percorre.getNext();
+            	// Apagar da lista original o que foi recortado            	
+            	if((LinhaFim+1) >= list.count()) {
+            		list.clear();
             	}
             	
+            	list.removeMarcados();
+            			
             	// como recortou nao ha mais nada selecionado
             	selecao = false;
             	
             	System.out.println("Linhas removidas e enviadas para a area de transferencia com sucesso.");
+            	
             }
             
             else if (opcao.startsWith(":p")) {
@@ -182,6 +176,12 @@ public class Main {
             
             
             else if (opcao.equals(":s")) {
+            	
+            	if (list.isEmpty()) {
+            		System.err.println("Lista vazia!");
+            		continue;
+            	}
+            	
                 String auxiliar = "";
                 int contador_linhas = 1;
                 node percorre = list.getHead();
@@ -286,7 +286,7 @@ public class Main {
                 }
 
                 try {
-                    int index = (Integer.parseInt(comando[1]));
+                    int index = (Integer.parseInt(comando[1]))-1;
 
                     if (index > list.count() || index < 0) {
                         System.out.println("Operação inválida, linha fora de alcance.");
