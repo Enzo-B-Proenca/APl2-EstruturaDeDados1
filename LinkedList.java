@@ -6,6 +6,7 @@
 // Referência: https://www.youtube.com/watch?v=xk4_1vDrzzo
 // Referência: https://www.youtube.com/watch?v=N6dOwBde7-M
 // Referência: https://www.youtube.com/watch?v=VJgCjLuU4e8&list=PLqleLpAMfxGDVu5tUmUg9jSQUUB8_5DB0
+// IMPORTANTE! COLOQUE OS ARQUIVOS TXT FORA DO SRC E OS ARQUIVOS JAVA DENTRO DO SRC
 import java.io.*;
 
 public class LinkedList {
